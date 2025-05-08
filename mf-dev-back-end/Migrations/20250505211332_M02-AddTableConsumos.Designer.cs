@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mf_dev_back_end.Models;
 
@@ -11,9 +12,11 @@ using mf_dev_back_end.Models;
 namespace mf_dev_back_end.Migrations
 {
     [DbContext(typeof(AppDbCoontext))]
-    partial class AppDbCoontextModelSnapshot : ModelSnapshot
+    [Migration("20250505211332_M02-AddTableConsumos")]
+    partial class M02AddTableConsumos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,30 +57,6 @@ namespace mf_dev_back_end.Migrations
                     b.HasIndex("VeiculoId");
 
                     b.ToTable("Consumos");
-                });
-
-            modelBuilder.Entity("mf_dev_back_end.Models.Usuario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Perfil")
-                        .HasColumnType("int");
-
-                    b.Property<string>("senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("mf_dev_back_end.Models.Veiculo", b =>

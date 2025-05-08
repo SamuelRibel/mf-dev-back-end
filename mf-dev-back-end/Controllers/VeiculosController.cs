@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using mf_dev_back_end.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace mf_dev_back_end.Controllers
 {
+    [Authorize]
     public class VeiculosController : Controller
     {
         private readonly AppDbCoontext _context;
@@ -36,11 +38,11 @@ namespace mf_dev_back_end.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            
+
             return View();
         }
 
-        public async Task<IActionResult> Edit(int? id) 
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return NotFound();
@@ -115,6 +117,31 @@ namespace mf_dev_back_end.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        public async Task<IActionResult> Relatorio(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var veiculo = await _context.Veiculos.FindAsync(id);
+
+            if (veiculo == null)
+                return NotFound();
+
+            var consumos = await _context.Consumos
+            .Where(c => c.VeiculoId == id)
+            .OrderByDescending(c => c.Data)
+            .ToListAsync();
+
+            decimal total = consumos.Sum(c => c.Valor);
+
+            ViewBag.Veiculo = veiculo;
+            ViewBag.Total = total;
+
+            return View(consumos);
+        }
+
 
     }
 }
